@@ -18,13 +18,17 @@ export class AppComponent {
   on_init_worker() {
     if (typeof Worker !== 'undefined') {
       // Create a new
-      const worker = new Worker(new URL('./app.worker', import.meta.url));
+      const worker = new Worker(new URL('./workers/app.worker', import.meta.url));
 
       worker.onmessage = ({ data }) => {
         console.log(`page got message: ${data}`);
       };
 
       worker.postMessage('hello');
+
+      worker.onerror = (error) => {
+        console.error('Error in Web Worker:', error.message);
+      };
 
     } else {
       // Web Workers are not supported in this environment.
@@ -35,13 +39,17 @@ export class AppComponent {
   on_init_worker2() {
     if (typeof Worker !== 'undefined') {
       // Create a new
-      const worker = new Worker(new URL('./app2.worker', import.meta.url));
+      const worker = new Worker(new URL('./workers/app2.worker', import.meta.url));
 
       worker.onmessage = ({ data }) => {
         console.log(`page got message: ${data}`);
       };
 
       worker.postMessage('hello');
+
+      worker.onerror = (error) => {
+        console.error('Error in Web Worker:', error.message);
+      };
 
     } else {
       // Web Workers are not supported in this environment.

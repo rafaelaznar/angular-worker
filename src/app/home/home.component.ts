@@ -16,5 +16,25 @@ export class HomeComponent {
 
   constructor() { }
 
+  on_init_worker() {
+    if (typeof Worker !== 'undefined') {
+      // Create a new
+      const worker = new Worker(new URL('./home.worker', import.meta.url));
+
+      worker.onmessage = ({ data }) => {
+        console.log(`page got message: ${data}`);
+      };
+
+      worker.postMessage('worker1 from home component!!');
+
+      worker.onerror = (error) => {
+        console.error('Error in Web Worker:', error.message);
+      };
+
+    } else {
+      // Web Workers are not supported in this environment.
+      // You should add a fallback so that your program still executes correctly.
+    }
+  }
 
 }
